@@ -16,6 +16,7 @@ struct ax_control_t {
 
 struct eng_control_t {
 	string eng_mode;
+	boolean start_ignite;
 }
 
 struct net_status_t {
@@ -28,9 +29,11 @@ struct mode_control_t {
 }
 
 struct eng_status_t {
-	int_16_t temp
-	int_16_t pressure
-	int_16_t rpm
+	boolean running;
+	int_16_t temp;
+	int_16_t pressure;
+	int_16_t rpm;
+	int_16_t fuel_flow;
 }
 
 
