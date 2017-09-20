@@ -1,0 +1,6 @@
+package exlcm;
+
+struct mode_control_t
+{
+	string evos_mode;  // DEV, SHOWROOM, RACE
+}

@@ -1,0 +1,10 @@
+package exlcm;
+
+struct eng_status_t
+{
+	boolean running;
+	int16_t temp;
+	int16_t pressure;
+	int16_t rpm;
+	int16_t fuel_flow;
+}

@@ -1,0 +1,8 @@
+package exlcm;
+
+struct eng_control_t
+{
+	string eng_mode;  // lean, rich, eco, etc.
+	boolean start_ignite;  // signal to indicate ignition procedure
+	boolean martin;  // test
+}

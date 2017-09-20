@@ -1,0 +1,7 @@
+package exlcm;
+
+struct net_status_t
+{
+	string socket_status;  // CONNECTED, DISCONNECTED, CONNECTING
+	string ip_address;
+}

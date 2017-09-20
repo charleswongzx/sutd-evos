@@ -1,0 +1,11 @@
+package exlcm;
+
+struct ax_control_t {
+	string source;
+	boolean front;
+	boolean sig_l;
+	boolean sig_r;
+	boolean brake;
+	boolean hazard;
+	int16_t showoff;
+}
