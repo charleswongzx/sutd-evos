@@ -1,4 +1,5 @@
 import lcm
+import kivy
 
 
 def run():
