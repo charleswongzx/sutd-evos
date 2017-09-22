@@ -10,11 +10,12 @@ except ImportError:
 import struct
 
 class net_status_t(object):
-    __slots__ = ["socket_status", "ip_address"]
+    __slots__ = ["socket_status", "ip_address", "signal_str"]
 
     def __init__(self):
         self.socket_status = ""
         self.ip_address = ""
+        self.signal_str = 0
 
     def encode(self):
         buf = BytesIO()
@@ -31,6 +32,7 @@ class net_status_t(object):
         buf.write(struct.pack('>I', len(__ip_address_encoded)+1))
         buf.write(__ip_address_encoded)
         buf.write(b"\0")
+        buf.write(struct.pack(">b", self.signal_str))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -48,13 +50,14 @@ class net_status_t(object):
         self.socket_status = buf.read(__socket_status_len)[:-1].decode('utf-8', 'replace')
         __ip_address_len = struct.unpack('>I', buf.read(4))[0]
         self.ip_address = buf.read(__ip_address_len)[:-1].decode('utf-8', 'replace')
+        self.signal_str = struct.unpack(">b", buf.read(1))[0]
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if net_status_t in parents: return 0
-        tmphash = (0x595840ba36f09cdd) & 0xffffffffffffffff
+        tmphash = (0x4468f4d980903473) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff)  + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

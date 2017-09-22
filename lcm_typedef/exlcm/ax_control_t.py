@@ -32,7 +32,7 @@ class ax_control_t(object):
         buf.write(struct.pack('>I', len(__source_encoded)+1))
         buf.write(__source_encoded)
         buf.write(b"\0")
-        buf.write(struct.pack(">bbbbbh", self.front, self.sig_l, self.sig_r, self.brake, self.hazard, self.showoff))
+        buf.write(struct.pack(">bbbbbb", self.front, self.sig_l, self.sig_r, self.brake, self.hazard, self.showoff))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -53,14 +53,14 @@ class ax_control_t(object):
         self.sig_r = bool(struct.unpack('b', buf.read(1))[0])
         self.brake = bool(struct.unpack('b', buf.read(1))[0])
         self.hazard = bool(struct.unpack('b', buf.read(1))[0])
-        self.showoff = struct.unpack(">h", buf.read(2))[0]
+        self.showoff = struct.unpack(">b", buf.read(1))[0]
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if ax_control_t in parents: return 0
-        tmphash = (0xd69c7128dac01b3c) & 0xffffffffffffffff
+        tmphash = (0x9d29638ecffc2a70) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff)  + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

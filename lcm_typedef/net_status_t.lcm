@@ -4,4 +4,5 @@ struct net_status_t
 {
 	string socket_status;  // CONNECTED, DISCONNECTED, CONNECTING
 	string ip_address;
+	int8_t signal_str;
 }

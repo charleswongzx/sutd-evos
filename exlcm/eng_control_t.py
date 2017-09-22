@@ -10,12 +10,11 @@ except ImportError:
 import struct
 
 class eng_control_t(object):
-    __slots__ = ["eng_mode", "start_ignite", "martin"]
+    __slots__ = ["eng_mode", "start_ignite"]
 
     def __init__(self):
         self.eng_mode = ""
         self.start_ignite = False
-        self.martin = False
 
     def encode(self):
         buf = BytesIO()
@@ -28,7 +27,7 @@ class eng_control_t(object):
         buf.write(struct.pack('>I', len(__eng_mode_encoded)+1))
         buf.write(__eng_mode_encoded)
         buf.write(b"\0")
-        buf.write(struct.pack(">bb", self.start_ignite, self.martin))
+        buf.write(struct.pack(">b", self.start_ignite))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -45,14 +44,13 @@ class eng_control_t(object):
         __eng_mode_len = struct.unpack('>I', buf.read(4))[0]
         self.eng_mode = buf.read(__eng_mode_len)[:-1].decode('utf-8', 'replace')
         self.start_ignite = bool(struct.unpack('b', buf.read(1))[0])
-        self.martin = bool(struct.unpack('b', buf.read(1))[0])
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if eng_control_t in parents: return 0
-        tmphash = (0xee78add5a62c4e27) & 0xffffffffffffffff
+        tmphash = (0x99f0e99349fe6f72) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff)  + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

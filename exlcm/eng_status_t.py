@@ -10,7 +10,7 @@ except ImportError:
 import struct
 
 class eng_status_t(object):
-    __slots__ = ["running", "temp", "pressure", "rpm", "fuel_flow"]
+    __slots__ = ["running", "temp", "pressure", "rpm", "fuel_flow", "speed"]
 
     def __init__(self):
         self.running = False
@@ -18,6 +18,7 @@ class eng_status_t(object):
         self.pressure = 0
         self.rpm = 0
         self.fuel_flow = 0
+        self.speed = 0
 
     def encode(self):
         buf = BytesIO()
@@ -26,7 +27,7 @@ class eng_status_t(object):
         return buf.getvalue()
 
     def _encode_one(self, buf):
-        buf.write(struct.pack(">bhhhh", self.running, self.temp, self.pressure, self.rpm, self.fuel_flow))
+        buf.write(struct.pack(">bbbbbb", self.running, self.temp, self.pressure, self.rpm, self.fuel_flow, self.speed))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -41,14 +42,14 @@ class eng_status_t(object):
     def _decode_one(buf):
         self = eng_status_t()
         self.running = bool(struct.unpack('b', buf.read(1))[0])
-        self.temp, self.pressure, self.rpm, self.fuel_flow = struct.unpack(">hhhh", buf.read(8))
+        self.temp, self.pressure, self.rpm, self.fuel_flow, self.speed = struct.unpack(">bbbbb", buf.read(5))
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if eng_status_t in parents: return 0
-        tmphash = (0x8f7cfbdf951395b5) & 0xffffffffffffffff
+        tmphash = (0x7ed01f10ed0905e3) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff)  + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)

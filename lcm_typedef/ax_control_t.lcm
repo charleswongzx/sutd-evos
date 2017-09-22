@@ -7,5 +7,5 @@ struct ax_control_t {
 	boolean sig_r;
 	boolean brake;
 	boolean hazard;
-	int16_t showoff;
+	int8_t showoff;
 }
