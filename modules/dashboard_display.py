@@ -6,13 +6,17 @@ from exlcm import eng_status_t
 from exlcm import net_status_t
 from exlcm import mode_control_t
 
+from kivy.config import Config
+
+Config.set('graphics', 'borderless', 0)
+Config.set('graphics', 'height', 480)
+Config.set('graphics', 'width', 800)
+
 from kivy.app import App
-from kivy.uix.button import Button
+
 from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
-
-from kivy.vector import Vector
-from kivy.clock import Clock
+from kivy.uix.button import Button
 
 
 # Global vars
@@ -65,55 +69,63 @@ net_status_sub = lc.subscribe("net_status", net_status_handler)
 mode_control_sub = lc.subscribe("mode_control", mode_control_handler)
 
 
-class VehicleModeWidget(Widget):
+# Creating widgets
+class VehicleModeWidget(BoxLayout):
     pass
 
 
-class LapWidget(Widget):
+class LapWidget(BoxLayout):
     pass
 
 
-class IgnitionWidget(Widget):
+class IgnitionWidget(BoxLayout):
     pass
 
 
-class RPMWidget(Widget):
+class RPMWidget(BoxLayout):
     pass
 
 
-class CopilotWidget(Widget):
+class CopilotWidget(BoxLayout):
     pass
 
 
-class SpeedWidget(Widget):
+class SpeedWidget(BoxLayout):
     pass
 
 
-class SignalStrengthWidget(Widget):
+class SignalStrengthWidget(BoxLayout):
     pass
 
 
-class EngineTempWidget(Widget):
+class EngineTempWidget(BoxLayout):
     pass
 
 
-class FuelConsumptionWidget(Widget):
+class FuelConsumptionWidget(BoxLayout):
     pass
 
 
-class DashboardApp(App):
-    title = 'evos_dashboard'
+class Rows(BoxLayout):
+    pass
+
+
+# Secret Widgets
+class ExitWidget(BoxLayout):
+    pass
+
+
+
+
+# Creating App
+class EVOSDashboardApp(App):
     # lc.handle()
-
     def build(self):
-        rows = BoxLayout(orientation='vertical')
-
-        return Button(text='HELLO',
-                      font_size=150)
+        return Rows()
 
 
 def run():
-    DashboardApp().run()
+    EVOSDashboardApp().run()
 
 
 run()

@@ -1,0 +1,126 @@
+#:kivy 1.9.0
+
+
+
+<Rows>:
+    orientation: 'vertical'
+
+    BoxLayout:
+        id: row0
+        orientation: 'horizontal'
+        size_hint: (1.0, 0.3)
+
+        ExitWidget:
+        VehicleModeWidget:
+        LapWidget:
+        IgnitionWidget:
+        ExitWidget:
+
+    BoxLayout:
+        id: row1
+        orientation: 'horizontal'
+        size_hint: (1.0, 0.4)
+        RPMWidget:
+        CopilotWidget:
+        SpeedWidget:
+
+    BoxLayout:
+        id: row2
+        orientation: 'horizontal'
+        size_hint: (1.0, 0.3)
+
+        ExitWidget:
+        SignalStrengthWidget:
+        EngineTempWidget:
+        FuelConsumptionWidget:
+        ExitWidget:
+
+# Row 0
+<VehicleModeWidget>:
+    Button:
+        id: VehicleMode
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'VehicleModeWidget'
+
+
+<LapWidget>:
+    Button:
+        id: Lap
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'LapWidget'
+
+<IgnitionWidget>:
+    Button:
+        id: Ignition
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'IgnitionWidget'
+
+
+# Row 1
+<RPMWidget>:
+    Button:
+        id: Ignition
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'IgnitionWidget'
+
+<CopilotWidget>:
+    Button:
+        id: Ignition
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'IgnitionWidget'
+
+<SpeedWidget>:
+    Button:
+        id: Ignition
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'IgnitionWidget'
+
+
+# Row2
+<SignalStrengthWidget>:
+    Button:
+        id: Ignition
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'IgnitionWidget'
+
+<EngineTempWidget>:
+    Button:
+        id: Ignition
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'IgnitionWidget'
+
+<FuelConsumptionWidget>:
+    Button:
+        id: Ignition
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        text: 'IgnitionWidget'
+
+# Secret widgets
+<ExitWidget>:
+    Button:
+        id: Secret
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        background_color: (0,0,0,1)
+        background_normal: ''
+        background_disabled_normal: ''
+
