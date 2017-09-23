@@ -58,7 +58,6 @@
             size_hint: (1.0, 0.4)
             valign: 'top'
             halign: 'center'
-            color: root.color
             text: 'Mode'
 
 
@@ -125,7 +124,7 @@
             size_hint: (1.0, 0.6)
             valign: 'bottom'
             halign: 'center'
-            text: '3500'
+            text: root.rpm
 
         Label:
             id:RPM_units
@@ -165,7 +164,7 @@
             size_hint: (1.0, 0.6)
             valign: 'bottom'
             halign: 'center'
-            text: '46'
+            text: root.speed
 
         Label:
             id: speed_units
@@ -191,7 +190,7 @@
             size_hint: (1.0, 0.6)
             valign: 'bottom'
             halign: 'center'
-            text: '4/5'
+            text: root.signal
 
         Label:
             id: speed_units
@@ -215,7 +214,7 @@
             size_hint: (1.0, 0.6)
             valign: 'bottom'
             halign: 'center'
-            text: '235'
+            text: root.temp
 
         Label:
             id: temp_units
@@ -239,7 +238,7 @@
             size_hint: (1.0, 0.6)
             valign: 'bottom'
             halign: 'center'
-            text: '394'
+            text: root.fuel_flow
 
         Label:
             id: fuel_units

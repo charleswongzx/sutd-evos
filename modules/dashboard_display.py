@@ -8,7 +8,7 @@ from exlcm import mode_control_t
 
 from kivy.config import Config
 
-Config.set('graphics', 'borderless', 0)
+Config.set('graphics', 'borderless', 1)
 Config.set('graphics', 'height', 480)
 Config.set('graphics', 'width', 800)
 
@@ -107,7 +107,7 @@ class IgnitionWidget(BoxLayout):
 
 
 class RPMWidget(BoxLayout):
-    rpm = NumericProperty(eng_rpm)
+    rpm = StringProperty(str(eng_rpm))
     pass
 
 
@@ -116,22 +116,22 @@ class CopilotWidget(BoxLayout):
 
 
 class SpeedWidget(BoxLayout):
-    speed = NumericProperty(veh_speed)
+    speed = StringProperty(str(veh_speed))
     pass
 
 
 class SignalStrengthWidget(BoxLayout):
-    signal = NumericProperty(net_signal)
+    signal = StringProperty(str(net_signal))
     pass
 
 
 class EngineTempWidget(BoxLayout):
-    temp = NumericProperty(eng_temp)
+    temp = StringProperty(str(eng_temp))
     pass
 
 
 class FuelConsumptionWidget(BoxLayout):
-    fuel_flow = NumericProperty(eng_fuel_flow)
+    fuel_flow = StringProperty(str(eng_fuel_flow))
     pass
 
 
