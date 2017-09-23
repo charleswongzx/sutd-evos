@@ -1,7 +1,5 @@
 #:kivy 1.9.0
 
-
-
 <Rows>:
     orientation: 'vertical'
 
@@ -20,6 +18,7 @@
         id: row1
         orientation: 'horizontal'
         size_hint: (1.0, 0.4)
+
         RPMWidget:
         CopilotWidget:
         SpeedWidget:
@@ -37,82 +36,220 @@
 
 # Row 0
 <VehicleModeWidget>:
-    Button:
-        id: VehicleMode
-        font_size: 30
-        size_hint_y: None
-        height: root.height
-        text: 'VehicleModeWidget'
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: temp
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            color: root.color
+            text: root.mode
+
+        Label:
+            id: temp_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            color: root.color
+            text: 'Mode'
 
 
 <LapWidget>:
-    Button:
-        id: Lap
-        font_size: 30
-        size_hint_y: None
-        height: root.height
-        text: 'LapWidget'
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: lap
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.current_lap+'/'+root.max_lap
+
+        Label:
+            id: total_laps
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'laps'
 
 <IgnitionWidget>:
-    Button:
-        id: Ignition
-        font_size: 30
-        size_hint_y: None
-        height: root.height
-        text: 'IgnitionWidget'
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: ignition
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.running
+            color: root.color
+
+        Label:
+            id: ignition_label
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'Ignition'
 
 
 # Row 1
 <RPMWidget>:
-    Label:
-        id: Ignition
-        font_name: 'Roboto-Regular'
-        font_size: 50
-        size_hint_y: None
-        height: root.height
-        text: '3500'
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: RPM
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 80
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: '3500'
+
+        Label:
+            id:RPM_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'RPM'
+
 
 <CopilotWidget>:
-    Button:
-        id: Ignition
-        font_size: 30
-        size_hint_y: None
-        height: root.height
-        text: 'IgnitionWidget'
+    size_hint_x: 0.4
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: 0.3
+        Image:
+            source: app.up_arrow
+            size_hint_y: 0.6
+            valign: 'center'
+            pos: root.width, root.height
+        Label:
+            size_hint_y: 0.3
 
 <SpeedWidget>:
-    Label:
-        id: Ignition
-        font_size: 60
-        size_hint_y: None
-        height: root.height
-        text: '42'
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: speed
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 80
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: '46'
+
+        Label:
+            id: speed_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'km/h'
 
 
 # Row2
 <SignalStrengthWidget>:
-    Button:
-        id: Ignition
-        font_size: 30
-        size_hint_y: None
-        height: root.height
-        text: 'IgnitionWidget'
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: signal
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: '4/5'
+
+        Label:
+            id: speed_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'SIGNAL'
 
 <EngineTempWidget>:
-    Button:
-        id: Ignition
-        font_size: 30
-        size_hint_y: None
-        height: root.height
-        text: 'IgnitionWidget'
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: temp
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: '235'
+
+        Label:
+            id: temp_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'deg C'
 
 <FuelConsumptionWidget>:
-    Button:
-        id: Ignition
-        font_size: 30
-        size_hint_y: None
-        height: root.height
-        text: 'IgnitionWidget'
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: fuel
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: '394'
+
+        Label:
+            id: fuel_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'km/L'
 
 # Secret widgets
 <ExitWidget>:
@@ -121,6 +258,6 @@
         font_size: 30
         size_hint_y: None
         height: root.height
-        background_color: (0,0,0,1)
-#        background_normal: ''
+        background_color: (0,0,0,0)
+        on_press: app.stop()
 
