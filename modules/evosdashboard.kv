@@ -40,7 +40,7 @@
         orientation: 'vertical'
 
         Label:
-            id: temp
+            id: mode
             font_name: app.ailerons_font
             text_size: self.size
             font_size: 50
@@ -51,7 +51,7 @@
             text: root.mode
 
         Label:
-            id: temp_units
+            id: mode_label
             font_name: app.ailerons_font
             text_size: self.size
             font_size: 20
@@ -87,6 +87,7 @@
 
 <IgnitionWidget>:
     BoxLayout:
+        id: ignition_widget
         orientation: 'vertical'
 
         Label:
@@ -193,7 +194,7 @@
             text: root.signal
 
         Label:
-            id: speed_units
+            id: signal_units
             font_name: app.ailerons_font
             text_size: self.size
             font_size: 20

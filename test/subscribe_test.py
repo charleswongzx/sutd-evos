@@ -1,3 +1,6 @@
+import sys
+sys.path.append('../')
+
 import lcm
 from exlcm import ax_control_t
 from exlcm import eng_control_t

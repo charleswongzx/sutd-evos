@@ -27,7 +27,7 @@ class eng_status_t(object):
         return buf.getvalue()
 
     def _encode_one(self, buf):
-        buf.write(struct.pack(">bbbbbb", self.running, self.temp, self.pressure, self.rpm, self.fuel_flow, self.speed))
+        buf.write(struct.pack(">bhhhhb", self.running, self.temp, self.pressure, self.rpm, self.fuel_flow, self.speed))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -42,14 +42,14 @@ class eng_status_t(object):
     def _decode_one(buf):
         self = eng_status_t()
         self.running = bool(struct.unpack('b', buf.read(1))[0])
-        self.temp, self.pressure, self.rpm, self.fuel_flow, self.speed = struct.unpack(">bbbbb", buf.read(5))
+        self.temp, self.pressure, self.rpm, self.fuel_flow, self.speed = struct.unpack(">hhhhb", buf.read(9))
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if eng_status_t in parents: return 0
-        tmphash = (0x7ed01f10ed0905e3) & 0xffffffffffffffff
+        tmphash = (0xce024a8297aaff86) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff)  + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
