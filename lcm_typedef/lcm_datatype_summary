@@ -13,7 +13,7 @@ struct ax_control_t
 	boolean sig_r;
 	boolean brake;
 	boolean hazard;
-	int_16_t showoff;
+	int_8_t showoff;
 }
 
 

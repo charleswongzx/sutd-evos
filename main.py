@@ -14,7 +14,6 @@ import modules.web_bridge as web_bridge
 
 def main():
 
-
     # Reading config file
     config = SafeConfigParser()
     config.read('config/evos_config.ini')
@@ -52,8 +51,6 @@ def main():
 
         # TODO Kill processes (perhaps with KeyboardInterrupt)
         process.terminate()
-
-
 
     return 1
 
