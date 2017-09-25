@@ -19,9 +19,9 @@
         orientation: 'horizontal'
         size_hint: (1.0, 0.4)
 
-        RPMWidget:
-        CopilotWidget:
         SpeedWidget:
+        CopilotWidget:
+        RPMWidget:
 
     BoxLayout:
         id: row2
@@ -30,8 +30,8 @@
 
         ExitWidget:
         SignalStrengthWidget:
-        EngineTempWidget:
         FuelConsumptionWidget:
+        EngineTempWidget:
         ExitWidget:
 
 # Row 0
@@ -121,8 +121,8 @@
             id: RPM
             font_name: app.ailerons_font
             text_size: self.size
-            font_size: 80
-            size_hint: (1.0, 0.6)
+            font_size: 120
+            size_hint: (1.0, 0.7)
             valign: 'bottom'
             halign: 'center'
             text: root.rpm
@@ -132,7 +132,7 @@
             font_name: app.ailerons_font
             text_size: self.size
             font_size: 20
-            size_hint: (1.0, 0.4)
+            size_hint: (1.0, 0.3)
             valign: 'top'
             halign: 'center'
             text: 'RPM'
@@ -161,8 +161,8 @@
             id: speed
             font_name: app.ailerons_font
             text_size: self.size
-            font_size: 80
-            size_hint: (1.0, 0.6)
+            font_size: 120
+            size_hint: (1.0, 0.7)
             valign: 'bottom'
             halign: 'center'
             text: root.speed
@@ -172,7 +172,7 @@
             font_name: app.ailerons_font
             text_size: self.size
             font_size: 20
-            size_hint: (1.0, 0.4)
+            size_hint: (1.0, 0.3)
             valign: 'top'
             halign: 'center'
             text: 'km/h'
