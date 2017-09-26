@@ -3,7 +3,7 @@
   #include <avr/power.h>
 #endif
 
-#define PIN 6
+#define PIN 6 //output pin to neopixel strip
 
 #define NUM_LEDS 60
 
@@ -11,19 +11,26 @@
 
 // Lighting looks
 int turnSignalLeft = 10; //LEDs
-int turnSignalRight = NUM_LEDS - turnSignalLeft;
+int turnSignalRight = NUM_LEDS - turnSignalLeft - 1;
 
 //turn signal animation
-static const int sweepTime = 200; //milliseconds
-static const int holdTime = 300; //milliseconds
-static const int offTime = sweepTime + holdTime;
+static const int sweepTime = 150; //milliseconds
+static const int holdTime = 250; //milliseconds
+static const int offTime = 450;
 static const int sweepMillis = sweepTime / turnSignalLeft;
-static const int turnGreenVal = 75;
+static const int turnGreenVal = 100;
+static const int dimLevel = 80; //brake light dim level
 
 //INPUT PINS
-static const int leftPin = 1;
-static const int rightPin = 2;
+static const int leftPin = 4;
+static const int rightPin = 5;
 static const int brakePin = 3;
+static const int interruptPin = 3;
+
+//pin state variables
+boolean leftState = false;
+boolean rightState = false;
+boolean brakeState = false;
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
@@ -50,8 +57,12 @@ void setup() {
   Serial.begin(115200);
 
   //PINMODES
-  pinMode(leftPin, INPUT_PULLUP);
-  pinMode(rightPin, INPUT_PULLUP);
+  pinMode(leftPin, INPUT);
+  pinMode(rightPin, INPUT);
+  pinMode(brakePin, INPUT);
+
+  //attach interrupt for brake pins
+  attachInterrupt(digitalPinToInterrupt(interruptPin), checkBrake, CHANGE);
 
   
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
@@ -65,8 +76,68 @@ void setup() {
 }
 
 void loop() {
-//  test1();
-  test2();
+  checkTurnSignals();
+  checkBrake();
+  
+  int sum = 0; 
+  if(leftState == true){
+    sum += 1;
+  }
+  if (rightState == true){
+    sum += 2;
+  }
+
+  switch(sum){
+    case 1:
+      turnLeft();
+      break;
+
+    case 2:
+      turnRight();
+      break;
+
+    case 3:
+      hazards();
+      break;
+  }
+}
+
+void checkBrake(){
+  //function to update the brake pin state
+  if(digitalRead(brakePin) == HIGH){
+    brakeState = true;
+    brakeLights();
+  }
+  else{
+    brakeState = false;
+    dimLights();
+  }
+}
+
+void checkTurnSignals(){
+  if(digitalRead(leftPin) == HIGH){
+    leftState = true;
+  }
+  else{
+    leftState = false;
+  }
+  if(digitalRead(rightPin) == HIGH){
+    rightState = true;
+  }
+  else{
+    rightState = false;
+  }
+}
+
+void printPinStates(){
+  Serial.print("Left = ");
+  Serial.println(leftState);
+
+  Serial.print("Right = ");
+  Serial.println(rightState);
+
+  Serial.print("Brake = ");
+  Serial.println(brakeState);
 }
 
 
@@ -80,17 +151,28 @@ void test1(){
   delay(1000);
   turnRight();
   delay(1000);
-  reverse();
-  delay(1000);
 }
 
 void test2(){
 //  turnLeft();
+  Serial.println("dim");
+  
   dimLights();
   delay(1000);
   brakeLights();
-  for(int i=0; i<10; i++){
+  
+  for(int i=0; i<3; i++){
     turnLeft();
+  }
+  delay(1000);
+  
+  for(int i=0; i<3; i++){
+    turnRight();
+  }
+  delay(1000);
+
+  for(int i=0; i<3; i++){
+    hazards();
   }
   delay(1000);
 }
@@ -107,25 +189,87 @@ void noLights(){
 }
 
 void dimLights(){
-  for(int i=0; i<NUM_LEDS; i++){
-    strip.setPixelColor(i, 80, 0, 0);
+  
+  int sum = 0; 
+  if(leftState == true){
+    sum += 1;
+  }
+  if (rightState == true){
+    sum += 2;
+  }
+
+  switch(sum){
+    case 0:
+      for(int i=0; i<NUM_LEDS; i++){
+        strip.setPixelColor(i, dimLevel, 0, 0);
+      }
+      break;
+
+    case 1:
+      for(int i=turnSignalLeft; i<NUM_LEDS; i++){
+        strip.setPixelColor(i, dimLevel, 0, 0);
+      }
+      break;
+
+    case 2:
+      for(int i=0; i<turnSignalRight+1; i++){
+        strip.setPixelColor(i, dimLevel, 0, 0);
+      }
+      break;
+
+    case 3:
+      for(int i=turnSignalLeft; i<turnSignalRight+1; i++){
+        strip.setPixelColor(i, dimLevel, 0, 0);
+      }
+      break;
   }
   strip.show();
 }
 
 void brakeLights(){
-  for(int i=0; i<NUM_LEDS; i++){
-    strip.setPixelColor(i, 255, 0, 0);
+  
+  int sum = 0; 
+  if(leftState == true){
+    sum += 1;
+  }
+  if (rightState == true){
+    sum += 2;
+  }
+
+  switch(sum){
+    case 0:
+      for(int i=0; i<NUM_LEDS; i++){
+        strip.setPixelColor(i, 255, 0, 0);
+      }
+      break;
+
+    case 1:
+      for(int i=turnSignalLeft; i<NUM_LEDS; i++){
+        strip.setPixelColor(i, 255, 0, 0);
+      }
+      break;
+
+    case 2:
+      for(int i=0; i<turnSignalRight+1; i++){
+        strip.setPixelColor(i, 255, 0, 0);
+      }
+      break;
+
+    case 3:
+      for(int i=turnSignalLeft; i<turnSignalRight+1; i++){
+        strip.setPixelColor(i, 255, 0, 0);
+      }
+      break;
   }
   strip.show();
 }
 
-void reverse(){
-  for(int i=0; i<NUM_LEDS; i++){
-    strip.setPixelColor(i, 255, 255, 200);
-  }
-  strip.show();
-}
+//void reverse(){
+//  for(int i=0; i<NUM_LEDS; i++){
+//    strip.setPixelColor(i, 255, 255, 200);
+//  }
+//  strip.show();
+//}
 
 void turnLeft(){
   //turn off the turn signal LEDs except rightmost one
@@ -156,20 +300,79 @@ void turnLeft(){
   delay(offTime);
 }
 
+//void turnLeft1(){ //ASYNC FUNCTION UNDER DEVELOPMENT.
+//  
+//  //CLEAR THE RIGHT SIGNAL FIRST, CODE BELOW IS WRONG.
+//  for(int i=0; i<turnSignalLeft - 1; i++){
+//    strip.setPixelColor(i, 0 ,0 ,0);
+//  }
+//  
+//  static startLeftTime = millis();
+//  static leftStep = 0;
+//  for(int i=0; i<turnSignalLeft - 1; i++){
+//    strip.setPixelColor(i, 0 ,0 ,0);
+//  }
+//  strip.setPixelColor(turnSignalLeft - 1, 255 , turnGreenVal ,0);
+//  strip.show();
+//  
+//
+//  if(millis() - startLeftTime >= ){
+//    strip.setPixelColor(
+//    strip.show();
+//    leftStep++;
+//  }
+//}
+
 void turnRight(){ // NOT IMPLEMENTED YET
-  //turn off the turn signal LEDs except rightmost one
-  for(int i=0; i<turnSignalLeft - 1; i++){
+  //turn off the turn signal LEDs except leftmost one
+  for(int i=NUM_LEDS-1; i>turnSignalRight + 1; i--){
     strip.setPixelColor(i, 0 ,0 ,0);
   }
-  strip.setPixelColor(turnSignalLeft - 1, 255 ,turnGreenVal ,0);
+  strip.setPixelColor(turnSignalRight + 1, 255 ,turnGreenVal ,0);
   strip.show();
 
   delay(sweepMillis);
   
   //begin turning on LEDs
-  for(int i=turnSignalLeft-2; i>=0; i--){
+  for(int i=turnSignalRight+2; i<NUM_LEDS; i++){
     //turn on the rightmost LED first
     strip.setPixelColor(i, 255, turnGreenVal, 0);
+    strip.show();
+    delay(sweepMillis);
+  }
+  
+  //hold
+  delay(holdTime);
+
+  //turn off the turn signal
+  for(int i=NUM_LEDS; i>turnSignalRight; i--){
+    strip.setPixelColor(i, 0, 0, 0);
+  }
+  strip.show();
+  delay(offTime);
+}
+
+void hazards(){
+  //turn off the turn signal LEDs except rightmost one
+  for(int i=0; i<turnSignalLeft - 1; i++){
+    strip.setPixelColor(i, 0 ,0 ,0);
+  }
+  strip.setPixelColor(turnSignalLeft - 1, 255 , turnGreenVal ,0);
+
+  //turn off the turn signal LEDs except leftmost one
+  for(int i=NUM_LEDS-1; i>turnSignalRight + 1; i--){
+    strip.setPixelColor(i, 0 ,0 ,0);
+  }
+  strip.setPixelColor(turnSignalRight + 1, 255 ,turnGreenVal ,0);
+  strip.show();
+
+  delay(sweepMillis);
+  
+  //begin turning on LEDs
+  for(int i=1; i<=turnSignalLeft; i++){
+    //turn on the rightmost LED first
+    strip.setPixelColor(turnSignalLeft-i, 255, turnGreenVal, 0);
+    strip.setPixelColor(turnSignalRight+i, 255, turnGreenVal, 0);
     strip.show();
     delay(sweepMillis);
   }
@@ -181,11 +384,12 @@ void turnRight(){ // NOT IMPLEMENTED YET
   for(int i=0; i<turnSignalLeft; i++){
     strip.setPixelColor(i, 0, 0, 0);
   }
+  for(int i=NUM_LEDS; i>turnSignalRight; i--){
+    strip.setPixelColor(i, 0, 0, 0);
+  }
   strip.show();
   delay(offTime);
 }
-
-
 
 // Input a value 0 to 255 to get a color value.
 // The colours are a transition r - g - b - back to r.
