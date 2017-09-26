@@ -1,0 +1,7 @@
+package exlcm;
+
+struct cam_feed_t
+{
+	boolean feed_running;
+	byte frame;
+}

@@ -1,0 +1,50 @@
+# LCM DATATYPES
+# lcm-gen -p example_t.lcm
+
+
+package exlcm;
+
+
+struct ax_control_t
+{
+	string source;  // REMOTE, LOCAL
+	boolean front;
+	boolean sig_l;
+	boolean sig_r;
+	boolean brake;
+	boolean hazard;
+	int_8_t showoff;
+}
+
+
+struct eng_control_t
+{
+	string eng_mode;  // lean, rich, eco, etc.
+	boolean start_ignite;  // signal to indicate ignition procedure
+}
+
+
+struct net_status_t
+{
+	string socket_status;  // CONNECTED, DISCONNECTED, CONNECTING
+	string ip_address;
+}
+
+
+struct mode_control_t
+{
+	string evos_mode;  // DEV, SHOWROOM, RACE
+}
+
+
+struct eng_status_t
+{
+	boolean running;
+	int_16_t temp;
+	int_16_t pressure;
+	int_16_t rpm;
+	int_16_t fuel_flow;
+}
+
+
+
