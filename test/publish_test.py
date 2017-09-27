@@ -12,7 +12,7 @@ lc = lcm.LCM()
 
 test_message = eng_status_t()
 test_message.running = True
-test_message.rpm = 2103
+test_message.rpm = 3500
 test_message.speed = 43
 test_message.temp = 320
 test_message.fuel_flow = 346

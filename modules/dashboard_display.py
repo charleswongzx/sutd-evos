@@ -8,7 +8,7 @@ from exlcm import mode_control_t
 
 from kivy.config import Config
 
-Config.set('graphics', 'borderless', 1)
+Config.set('graphics', 'borderless', 0)
 Config.set('graphics', 'height', 480)
 Config.set('graphics', 'width', 800)
 
