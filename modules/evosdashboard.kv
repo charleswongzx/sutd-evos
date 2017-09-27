@@ -1,0 +1,263 @@
+#:kivy 1.9.0
+
+<Rows>:
+    orientation: 'vertical'
+
+    BoxLayout:
+        id: row0
+        orientation: 'horizontal'
+        size_hint: (1.0, 0.3)
+
+        ExitWidget:
+        VehicleModeWidget:
+        LapWidget:
+        IgnitionWidget:
+        ExitWidget:
+
+    BoxLayout:
+        id: row1
+        orientation: 'horizontal'
+        size_hint: (1.0, 0.4)
+
+        SpeedWidget:
+        CopilotWidget:
+        RPMWidget:
+
+    BoxLayout:
+        id: row2
+        orientation: 'horizontal'
+        size_hint: (1.0, 0.3)
+
+        ExitWidget:
+        SignalStrengthWidget:
+        FuelConsumptionWidget:
+        EngineTempWidget:
+        ExitWidget:
+
+# Row 0
+<VehicleModeWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: mode
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            color: root.color
+            text: root.mode
+
+        Label:
+            id: mode_label
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'Mode'
+
+
+<LapWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: lap
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.current_lap+'/'+root.max_lap
+
+        Label:
+            id: total_laps
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'laps'
+
+<IgnitionWidget>:
+    BoxLayout:
+        id: ignition_widget
+        orientation: 'vertical'
+
+        Label:
+            id: ignition
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.running
+            color: root.color
+
+        Label:
+            id: ignition_label
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'Ignition'
+
+
+# Row 1
+<RPMWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: RPM
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 120
+            size_hint: (1.0, 0.7)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.rpm
+
+        Label:
+            id:RPM_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.3)
+            valign: 'top'
+            halign: 'center'
+            text: 'RPM'
+
+
+<CopilotWidget>:
+    size_hint_x: 0.4
+
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            size_hint_y: 0.3
+        Image:
+            source: app.up_arrow
+            size_hint_y: 0.6
+            valign: 'center'
+            pos: root.width, root.height
+        Label:
+            size_hint_y: 0.3
+
+<SpeedWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: speed
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 120
+            size_hint: (1.0, 0.7)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.speed
+
+        Label:
+            id: speed_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.3)
+            valign: 'top'
+            halign: 'center'
+            text: 'km/h'
+
+
+# Row2
+<SignalStrengthWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: signal
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.signal
+
+        Label:
+            id: signal_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'SIGNAL'
+
+<EngineTempWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: temp
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.temp
+
+        Label:
+            id: temp_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'deg C'
+
+<FuelConsumptionWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            id: fuel
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 50
+            size_hint: (1.0, 0.6)
+            valign: 'bottom'
+            halign: 'center'
+            text: root.fuel_flow
+
+        Label:
+            id: fuel_units
+            font_name: app.ailerons_font
+            text_size: self.size
+            font_size: 20
+            size_hint: (1.0, 0.4)
+            valign: 'top'
+            halign: 'center'
+            text: 'km/L'
+
+# Secret widgets
+<ExitWidget>:
+    Button:
+        id: Secret
+        font_size: 30
+        size_hint_y: None
+        height: root.height
+        background_color: (0,0,0,0)
+        on_press: app.stop()
+
