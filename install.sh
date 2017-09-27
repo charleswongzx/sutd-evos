@@ -18,8 +18,8 @@ make
 sudo make install
 sudo ldconfig
 
-export LCM_INSTALL_DIR=/usr/local/lib
-sudo bash -c 'echo '/usr/local/lib' > /etc/ld.so.conf.d/lcm.conf'
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
-sudo bash -c 'echo "/usr/local/lib/python2.7/site-packages" > /usr/local/lib/python2.7/lcm.pth'
+#export LCM_INSTALL_DIR=/usr/local/lib
+#sudo bash -c 'echo '/usr/local/lib' > /etc/ld.so.conf.d/lcm.conf'
+#export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+#sudo bash -c 'echo "/usr/local/lib/python2.7/site-packages" > /usr/local/lib/python2.7/lcm.pth'
 
