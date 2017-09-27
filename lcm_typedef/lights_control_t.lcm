@@ -1,0 +1,9 @@
+package exlcm;
+
+struct lights_control_t
+{
+	boolean leftSignal;
+	boolean rightSignal;
+    boolean hazards;
+    boolean brakes;
+}
