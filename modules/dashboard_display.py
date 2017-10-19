@@ -8,6 +8,7 @@ from exlcm import mode_control_t
 
 from kivy.config import Config
 
+Config.set('graphics', 'show_cursor', 0)
 Config.set('graphics', 'fullscreen', 1)
 Config.set('graphics', 'borderless', 1)
 Config.set('graphics', 'height', 480)
