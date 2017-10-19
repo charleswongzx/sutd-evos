@@ -10,7 +10,7 @@ sudo apt -y install build-essential
 sudo apt -y install libglib2.0-dev
 
 
-wget hhttps://github.com/lcm-proj/lcm/releases/download/v1.3.1/lcm-1.3.1.zip
+wget https://github.com/lcm-proj/lcm/releases/download/v1.3.1/lcm-1.3.1.zip
 tar -xzvf lcm-1.3.1.zip
 cd lcm-1.3.1
 ./configure
