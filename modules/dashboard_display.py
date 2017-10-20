@@ -5,26 +5,22 @@ import lcm
 from exlcm import eng_status_t
 from exlcm import net_status_t
 from exlcm import mode_control_t
+from exlcm import log_control_t
 
 from kivy.config import Config
-
 Config.set('graphics', 'show_cursor', 0)
-Config.set('graphics', 'fullscreen', 1)
+Config.set('graphics', 'fullscreen', 0)
 Config.set('graphics', 'borderless', 1)
 Config.set('graphics', 'height', 480)
 Config.set('graphics', 'width', 800)
 
 from kivy.app import App
-
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
-
 from kivy.clock import Clock
-
-
 from kivy.core.window import Window
-Window.clearcolor = (0.1, 0.1, 0.1, 1)
 
+Window.clearcolor = (0.1, 0.1, 0.1, 1)
 
 # Global vars
 update_freq = 0.1
@@ -36,6 +32,9 @@ net_signal = 0
 
 # mode_control
 evos_mode = 'DEV'
+
+# log control
+log_recording = False
 
 # eng_status
 eng_running = False
@@ -70,6 +69,13 @@ def mode_control_handler(channel, data):
     msg = mode_control_t.decode(data)
 
     evos_mode = msg.evos_mode
+
+
+def log_control_handler(channel, data):
+    global log_recording
+    msg = log_control_t.decode(data)
+
+    log_recording = msg.recording
 
 
 # Init LCM
@@ -224,6 +230,26 @@ class Rows(BoxLayout):
 # Secret Widgets
 class ExitWidget(BoxLayout):
     pass
+
+
+class LogWidget(BoxLayout):
+    # Toggles log recording onto web server
+    recording_dot = '../resources/images/red_dot.png'
+
+    recording = log_recording
+    img = recording_dot
+
+    # TODO: if recording is true, show red dot. else, remain blank
+
+    def toggle_recording(self, *args):
+        print self.img
+        self.recording = not self.recording
+        if self.recording:
+            self.img = self.recording_dot
+        else:
+            self.img = ''
+
+        # TODO: im.reload()
 
 
 # Creating App

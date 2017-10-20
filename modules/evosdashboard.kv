@@ -32,7 +32,7 @@
         SignalStrengthWidget:
         FuelConsumptionWidget:
         EngineTempWidget:
-        ExitWidget:
+        LogWidget:
 
 # Row 0
 <VehicleModeWidget>:
@@ -260,4 +260,16 @@
         height: root.height
         background_color: (0,0,0,0)
         on_press: app.stop()
+
+<LogWidget>:
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            id: Log
+            background_color: (0,0,0,0)
+            on_press: root.toggle_recording()
+            Image:
+                source: root.img
+                center: root.center
+
 

@@ -1,0 +1,6 @@
+package exlcm;
+
+struct log_control_t
+{
+	boolean recording;  // begin log recording or not
+}
