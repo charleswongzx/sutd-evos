@@ -6,6 +6,7 @@ import time
 import lcm
 from exlcm import ax_control_t
 from exlcm import eng_status_t
+from exlcm import log_control_t
 
 
 def run():
@@ -17,7 +18,7 @@ def run():
     pressure = 0
 
     veh_status_dict = {'type': 'engine_stat',
-                       'timestamp': time.clock(),
+                       'timestamp': 0,
                        'running': running,
                        'rpm': rpm,
                        'speed': speed,
@@ -25,12 +26,16 @@ def run():
                        'fuel_flow': fuel_flow,
                        'pressure': pressure}
 
+    log_control_dict = {'timestamp': 0,
+                        'type': '',
+                        'recording': False}
+
     # LCM Handling
-    def ax_handler(channel, data):
+    def ax_control_handler(channel, data):
         msg = ax_control_t.decode(data)
         print msg.source
 
-    def eng_handler(channel, data):
+    def eng_status_handler(channel, data):
         global veh_status_dict
         msg = eng_status_t.decode(data)
         veh_status_dict['timestamp'] = time.clock()
@@ -40,9 +45,21 @@ def run():
         veh_status_dict['temp'] = msg.temp
         veh_status_dict['fuel_flow'] = msg.fuel_flow
         veh_status_dict['pressure'] = msg.pressure
+        
+    def log_control_handler(channel, data):
+        global log_control_dict
+        msg = log_control_t.decode(data)
+        log_control_dict['timestamp'] = time.clock()
+        log_control_dict['recording'] = msg.recording
+
+        if msg.recording:
+                log_control_dict['type'] = 'log_begin'
+        else:
+            log_control_dict['type'] = 'log_end'
+
 
     lc = lcm.LCM()
-    eng_sub = lc.subscribe("eng_status", eng_handler)
+    eng_sub = lc.subscribe("eng_status", eng_status_handler)
 
     # Websockets
     def on_message(ws, message):
