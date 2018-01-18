@@ -36,7 +36,7 @@ def run():
         print msg.source
 
     def eng_status_handler(channel, data):
-        global veh_status_dict
+        # global veh_status_dict
         msg = eng_status_t.decode(data)
         veh_status_dict['timestamp'] = time.clock()
         veh_status_dict['running'] = msg.running
@@ -45,7 +45,7 @@ def run():
         veh_status_dict['temp'] = msg.temp
         veh_status_dict['fuel_flow'] = msg.fuel_flow
         veh_status_dict['pressure'] = msg.pressure
-        
+
     def log_control_handler(channel, data):
         global log_control_dict
         msg = log_control_t.decode(data)
@@ -73,15 +73,18 @@ def run():
 
     def on_open(ws):
         def runner(*args):
-            global veh_status_dict
+            # global veh_status_dict
+
+            print('websocket runner started')
 
             while True:
                 try:
                     lc.handle()
+                    print('lcm handled')
 
-                    # Log recording
-                    log_record_json = json.dumps(log_record_dict)
-                    ws.send(log_record_json)
+                    # # Log recording
+                    # log_record_json = json.dumps(log_record_dict)
+                    # ws.send(log_record_json)
 
                     # Vehicle status
                     veh_status_json = json.dumps(veh_status_dict)
