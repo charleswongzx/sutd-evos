@@ -2,12 +2,13 @@ import websocket
 import thread
 import json
 import time
+import select
 
 import lcm
 from exlcm import ax_control_t
 from exlcm import eng_status_t
 from exlcm import log_control_t
-
+from exlcm import cam_feed_t
 
 def run():
     running = False
@@ -30,7 +31,16 @@ def run():
                         'type': '',
                         'recording': False}
 
+    cam_frame = bytearray()
+    cam_running = False
+
     # LCM Handling
+    def cam_feed_handler(channel, data):
+        msg = cam_feed_t.decode(data)
+        cam_running = msg.feed_running
+        cam_frame = msg.frame
+
+
     def ax_control_handler(channel, data):
         msg = ax_control_t.decode(data)
         print msg.source
@@ -38,7 +48,7 @@ def run():
     def eng_status_handler(channel, data):
         # global veh_status_dict
         msg = eng_status_t.decode(data)
-        veh_status_dict['timestamp'] = time.clock()
+        # veh_status_dict['timestamp'] = time.clock()
         veh_status_dict['running'] = msg.running
         veh_status_dict['rpm'] = msg.rpm
         veh_status_dict['speed'] = msg.speed
@@ -72,29 +82,64 @@ def run():
         print("### closed ###")
 
     def on_open(ws):
+        def send_video_frame(frame):
+            return None
+
         def runner(*args):
             # global veh_status_dict
 
             print('websocket runner started')
 
-            while True:
-                try:
-                    lc.handle()
-                    print('lcm handled')
+            try:
+                # to prevent sending duplicates
+                old_veh_status_dict = {}
+                old_frame = bytearray()
 
-                    # # Log recording
-                    # log_record_json = json.dumps(log_record_dict)
-                    # ws.send(log_record_json)
+                while True:
+                    rfds, wfds, efds = select.select([lc.fileno()], [], [], 1.5)
+                    if rfds:
+                        lc.handle()
+                        # Log recording
+                        # log_record_json = json.dumps(log_record_dict)
+                        # ws.send(log_record_json)
 
-                    # Vehicle status
-                    veh_status_json = json.dumps(veh_status_dict)
-                    ws.send(veh_status_json)
+                        # Camera feed
+                        if cam_running and old_frame != cam_frame:
+                            ws.send(b'--frame\r\n'
+                                    b'Content-Type: image/jpeg\r\n\r\n' + cam_frame + b'\r\n')
+                            old_frame = cam_frame
 
-                    time.sleep(0.08)  # 12Hz
+                        # Vehicle status
+                        if cmp(veh_status_dict, old_veh_status_dict):
+                            veh_status_json = json.dumps(veh_status_dict)
+                            ws.send(veh_status_json)
+                            old_veh_status_dict = veh_status_dict.copy()
+                    else:
+                        print("Message queue empty...")
 
-                except KeyboardInterrupt:
+            except KeyboardInterrupt:
                     ws.close()
                     pass
+
+            # while True:
+            #     try:
+            #         lc.handle()
+            #         print (lc.fileno())
+            #         print('lcm handled')
+            #
+            #         # # Log recording
+            #         # log_record_json = json.dumps(log_record_dict)
+            #         # ws.send(log_record_json)
+            #
+            #         # Vehicle status
+            #         veh_status_json = json.dumps(veh_status_dict)
+            #         ws.send(veh_status_json)
+            #
+            #         time.sleep(0.08)  # 12Hz
+            #
+            #     except KeyboardInterrupt:
+            #         ws.close()
+            #         pass
 
         thread.start_new_thread(runner, ())
 
