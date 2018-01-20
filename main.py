@@ -23,7 +23,7 @@ def main():
     # Init processes
     procs = []
 
-    dash_buttons_proc = mp.Process(target=dash_buttons.run, name='dash_buttons_proc')
+    # dash_buttons_proc = mp.Process(target=dash_buttons.run, name='dash_buttons_proc')
     dash_display_proc = mp.Process(target=dash_display.run, name='dash_display_proc')
     tele_storage_proc = mp.Process(target=tele_storage.run, name='tele_storage_proc')
     ax_control_proc = mp.Process(target=ax_controller.run, name='ax_control_proc')
@@ -32,7 +32,7 @@ def main():
     web_bridge_proc = mp.Process(target=web_bridge.run, name='web_bridge_proc')
 
     # Store and run processes
-    procs.append(dash_buttons_proc)
+    # procs.append(dash_buttons_proc)
     procs.append(dash_display_proc)
     procs.append(tele_storage_proc)
     procs.append(ax_control_proc)

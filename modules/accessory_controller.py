@@ -5,4 +5,4 @@ def run():
 
     while True:
         print 0
-        # Do your shit here
+        # all accessories incl lights, wipers, AND LAP COUNTER.

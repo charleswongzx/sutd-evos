@@ -1,8 +1,9 @@
 import sys
 sys.path.append('../')
+import select
 
 import lcm
-from exlcm import eng_status_t
+from exlcm import veh_status_t
 from exlcm import net_status_t
 from exlcm import mode_control_t
 from exlcm import log_control_t
@@ -48,7 +49,7 @@ veh_speed = 0
 # LCM handlers
 def eng_status_handler(channel, data):
     global eng_running, eng_fuel_flow, eng_temp, eng_rpm, veh_speed
-    msg = eng_status_t.decode(data)
+    msg = veh_status_t.decode(data)
 
     eng_running = msg.running
     eng_temp = msg.temp
@@ -260,7 +261,15 @@ class EVOSDashboardApp(App):
     up_arrow = '../resources/images/up_arrow.png'
 
     def update_lcm(self, *args):
-        lc.handle()
+        try:
+            rfds, wfds, efds = select.select([lc.fileno()], [], [], 1.5)
+            if rfds:
+                lc.handle()
+            else:
+                print('Message queue empty...')
+
+        except KeyboardInterrupt:
+            pass
 
     def build(self):
         event = Clock.schedule_interval(self.update_lcm, 1/30.)

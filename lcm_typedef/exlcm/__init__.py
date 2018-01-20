@@ -10,3 +10,5 @@ from .mode_control_t import mode_control_t
 from .net_status_t import net_status_t
 from .cam_feed_t import cam_feed_t
 from .log_control_t import log_control_t
+from .eng_toggle_t import eng_toggle_t
+from .veh_status_t import veh_status_t

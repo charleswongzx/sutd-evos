@@ -10,16 +10,17 @@ except ImportError:
 import struct
 
 class ax_control_t(object):
-    __slots__ = ["source", "front", "sig_l", "sig_r", "brake", "hazard", "showoff"]
+    __slots__ = ["source", "wipers", "ptt", "horn", "headlight", "sig_l", "sig_r", "hazard"]
 
     def __init__(self):
         self.source = ""
-        self.front = False
+        self.wipers = False
+        self.ptt = False
+        self.horn = False
+        self.headlight = False
         self.sig_l = False
         self.sig_r = False
-        self.brake = False
         self.hazard = False
-        self.showoff = 0
 
     def encode(self):
         buf = BytesIO()
@@ -32,7 +33,7 @@ class ax_control_t(object):
         buf.write(struct.pack('>I', len(__source_encoded)+1))
         buf.write(__source_encoded)
         buf.write(b"\0")
-        buf.write(struct.pack(">bbbbbb", self.front, self.sig_l, self.sig_r, self.brake, self.hazard, self.showoff))
+        buf.write(struct.pack(">bbbbbbb", self.wipers, self.ptt, self.horn, self.headlight, self.sig_l, self.sig_r, self.hazard))
 
     def decode(data):
         if hasattr(data, 'read'):
@@ -48,19 +49,20 @@ class ax_control_t(object):
         self = ax_control_t()
         __source_len = struct.unpack('>I', buf.read(4))[0]
         self.source = buf.read(__source_len)[:-1].decode('utf-8', 'replace')
-        self.front = bool(struct.unpack('b', buf.read(1))[0])
+        self.wipers = bool(struct.unpack('b', buf.read(1))[0])
+        self.ptt = bool(struct.unpack('b', buf.read(1))[0])
+        self.horn = bool(struct.unpack('b', buf.read(1))[0])
+        self.headlight = bool(struct.unpack('b', buf.read(1))[0])
         self.sig_l = bool(struct.unpack('b', buf.read(1))[0])
         self.sig_r = bool(struct.unpack('b', buf.read(1))[0])
-        self.brake = bool(struct.unpack('b', buf.read(1))[0])
         self.hazard = bool(struct.unpack('b', buf.read(1))[0])
-        self.showoff = struct.unpack(">b", buf.read(1))[0]
         return self
     _decode_one = staticmethod(_decode_one)
 
     _hash = None
     def _get_hash_recursive(parents):
         if ax_control_t in parents: return 0
-        tmphash = (0x9d29638ecffc2a70) & 0xffffffffffffffff
+        tmphash = (0xa15a031c8aa74eb4) & 0xffffffffffffffff
         tmphash  = (((tmphash<<1)&0xffffffffffffffff)  + (tmphash>>63)) & 0xffffffffffffffff
         return tmphash
     _get_hash_recursive = staticmethod(_get_hash_recursive)
