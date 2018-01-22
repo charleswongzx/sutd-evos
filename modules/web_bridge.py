@@ -10,14 +10,18 @@ from exlcm import veh_status_t
 from exlcm import log_control_t
 from exlcm import cam_feed_t
 from exlcm import eng_toggle_t
+from exlcm import lap_count_t
 
 
 def run():
 
     debug = False
 
+    lap_count_dict = {'type': 'lap_count',
+                      'current_lap': 0}
+
     eng_toggle_dict = {'type': 'eng_toggle',
-                  'toggle': False}
+                       'toggle': False}
 
     veh_status_dict = {'type': 'engine_stat',
                        'timestamp': time.clock(),
@@ -53,6 +57,10 @@ def run():
     def eng_toggle_handler(channel, data):
         msg = eng_toggle_t.decode(data)
         eng_toggle_dict['toggle'] = msg.toggle
+
+    def lap_count_handler(channel, data):
+        msg = lap_count_t.decode(data)
+        lap_count_dict['current_lap'] = msg.current_lap
 
     def cam_feed_handler(channel, data):
         msg = cam_feed_t.decode(data)
@@ -145,6 +153,10 @@ def run():
 
                         # Engine toggle
                         ws.send(json.dumps(eng_toggle_dict))
+
+                        # Lap Count
+                        ws.send(json.dumps(lap_count_dict))
+
                     else:
                         if debug:
                             print("Message queue empty...")
