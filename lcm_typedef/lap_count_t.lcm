@@ -1,0 +1,6 @@
+package exlcm;
+
+struct lap_count_t
+{
+    int current_lap;
+}

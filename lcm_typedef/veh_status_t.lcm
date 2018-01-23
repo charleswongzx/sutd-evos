@@ -1,6 +1,6 @@
 package exlcm;
 
-struct eng_status_t
+struct veh_status_t
 {
 	boolean running;
 	int16_t temp;  // celsius

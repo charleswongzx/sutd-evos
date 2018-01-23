@@ -1,6 +1,10 @@
 #!/bin/bash
 # Script for installing EVOS environment
 
+# Websocket setup
+pip install websocket-client
+
+# Kivy setup
 sudo apt -y install python-dev
 sudo apt -y install python-kivy
 
@@ -9,7 +13,7 @@ sudo apt -y install openjdk-6-jdk
 sudo apt -y install build-essential
 sudo apt -y install libglib2.0-dev
 
-
+# LCM Setup
 wget https://github.com/lcm-proj/lcm/releases/download/v1.3.1/lcm-1.3.1.zip
 tar -xzvf lcm-1.3.1.zip
 cd lcm-1.3.1

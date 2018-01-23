@@ -13,7 +13,7 @@ def ax_handler(channel, data):
 
 def eng_handler(channel, data):
     msg = eng_control_t.decode(data)
-    print msg.martin
+    print msg.running
 
 
 lc = lcm.LCM()

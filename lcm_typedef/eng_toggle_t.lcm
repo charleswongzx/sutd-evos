@@ -1,0 +1,6 @@
+package exlcm;
+
+struct eng_toggle_t
+{
+    boolean toggle;
+}
