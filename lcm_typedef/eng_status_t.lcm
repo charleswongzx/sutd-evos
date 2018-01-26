@@ -3,9 +3,17 @@ package exlcm;
 struct eng_status_t
 {
 	boolean running;
-	int16_t temp;  // celsius
-	int16_t pressure;  // psi
 	int16_t rpm;
-	int16_t fuel_flow;  // ??
-	int8_t speed;  // kph
+	int16_t maps  // manifold pres kpa
+	int16_t tps  // throttle pos %
+   	int16_t ect  // eng coolant celsius 
+   	int16_t ias  // intake air celsius
+   	int16_t o2s  // exhaust O2 voltage
+   	int16_t spark  // spark CrA
+   	int16_t fuelpw1  // ms
+   	int16_t fuelpw2  // ms
+   	int16_t ubadc1  // battery voltage
+   	int16_t fuellvl  // %
+   	int16_t baro  // outside pressure
+   	int16_t fuelconsum // gram/min
 }
