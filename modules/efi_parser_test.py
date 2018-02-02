@@ -23,7 +23,7 @@ def run():
                    'ias': '0', #intake air temperature
                    'o2s': '0', #oxygen exhaust
                    'spark': '0', #spark voltage
-                   'fuelpw1': '0', #fuel pump 1
+                   'fuelpw1': '0', #fuel injector
                    'fuelpw2': '0', #fuel pump 2
                    'ubadc1': '0', #battery voltage from ADC
                    'fuellvl': '0', #fuel level in %
@@ -70,11 +70,11 @@ def run():
 
     def calc(raw,factor,offset):
         if len(raw)>=2:
-            highbyte=raw[0]
-            lowbyte=raw[1]
+            highbyte=int(raw[0])
+            lowbyte=int(raw[1])
             pros=((highbyte*factor)+lowbyte)*raw+offset
         elif len(raw)==1:
-            highbyte=raw[0]
+            highbyte=int(raw[0])
             lowbyte=0
             pros=((highbyte*factor)+lowbyte)*factor+offset
         else:
@@ -147,7 +147,7 @@ def run():
             print "Tears, no data from EFI"
 #####################TEST######################
         for key,val in efi_parser_dict:
-            print (key,' ', val)
+            print (key,' ', val,'\n')
         time.sleep(update_freq)
 
 run()
