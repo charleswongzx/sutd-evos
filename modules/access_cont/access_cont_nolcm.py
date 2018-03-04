@@ -100,8 +100,9 @@ def run():
             button=buttonmap[channel]
             accessory_controller_dict[button]= not accessory_controller_dict[button]
             relay_pin=int(channel)-4
-            GPIO.output(relay_pin,GPIO.HIGH)
+            GPIO.output(relay_pin,accessory_controller_dict[button])
             acc_prev[button]=accessory_controller_dict[button]
+            print(button, accessory_controller_dict[button])
 
     def cloudhandle():
         accessory_controller_dict['cloud']=False
@@ -125,7 +126,7 @@ def run():
     for i in lightbuttonpins:
         GPIO.add_event_detect(i, GPIO.FALLING, callback=light_callback)
     for i in relaybuttonpins:
-        GPIO.add_event_detect(i, GPIO.FALLING, callback=relay_callback)
+        GPIO.add_event_detect(i, GPIO.BOTH, callback=relay_callback)
 
     while True:
         time_now=time.time()
