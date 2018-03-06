@@ -10,7 +10,7 @@ int s_counter_m=0;
 #define GPSECHO  false
 // this keeps track of whether we're using the interrupt
 // off by default!
-#define SPEED 83 //speed/S
+#define SPEED 83 //speed S
 boolean usingInterrupt = false;
 
 uint32_t timer = millis();
@@ -25,14 +25,14 @@ Adafruit_GPS GPS(&mySerial);
 #define PINF_L 7//output pin to front
 #define PINF_R 6 //output pin to front  
 #define PINR 5 //output pin to rear
-#define PIN_S 4
+#define PIN_S 4 //output pin to starter
 #define OFF 0// 
 #define HEADLIGHTS 1//
 #define HAZARD 2//
 #define LEFT 3//
 #define RIGHT 4//
-#define STARTER 5//
-#define BRAKE 6//
+#define BRAKE 5//
+#define STARTER 6//
 #define HEADLIGHTS_OFF 65//A
 #define HEADLIGHTS_ON 66//B
 #define HAZARD_OFF 67//C
@@ -82,7 +82,7 @@ int HL = 0;
 int HZ=0;
 int B=0;
 int B_LAST=0;
-
+int S=0;
 //PRIORITY TRACKER & LAST LIGHT STATE
 int PRIORITY=0;
 int LAST_STATE=0;
@@ -147,14 +147,11 @@ void loop() {
 //    Serial.print('\n');
 //    timer=millis();
 //  }
-  
-  if (B==1 && B_LAST==0){
-    lightLogic(5,currentMillis);
-    B_LAST++;
+  if (S==1){
+    lightLogic(STARTER,currentMillis);
   }
-  else if(B==0 && B_LAST ==1){
-    lightLogic(LAST_STATE,currentMillis);
-    B_LAST--;
+  else if(S==0){
+    starterOff();
   }
   if (HZ==1){
     lightLogic(2,currentMillis);
@@ -166,6 +163,14 @@ void loop() {
       lightLogic(LAST_STATE,currentMillis);
     }
     else{
+      if (B==1 && B_LAST==0){
+        lightLogic(BRAKE,currentMillis);
+        B_LAST++;
+      }
+      else if(B==0 && B_LAST ==1){
+        lightLogic(LAST_STATE,currentMillis);
+        B_LAST--;
+      }
       if (HL==1 && LAST_STATE != 3 && LAST_STATE != 4 && B_LAST != 1){
         lightLogic(HEADLIGHTS,currentMillis);
         LAST_STATE=1;
@@ -274,16 +279,18 @@ void serialParse(){
 }
 
 void lightLogic(int check, unsigned long currentMillis){
-  unsigned long s_interval=20;
+  unsigned long s_interval=5;
   unsigned long l_interval=50;
   switch(check){
     case 0://OFF
            noLights();
            break;
     case 1://HEADLIGHTS
+//          Serial.print("HL");
            headlights();
            break;
     case 2://HAZARD
+//          Serial.print("HZ");
            if ((unsigned long)(currentMillis-l_previousMillis)>=l_interval){
 //              Serial.print("HAZARD");
               hazard();
@@ -482,7 +489,13 @@ void brakeLights(){
   strip_r.show();
   }
 }
-
+void starterOff(){
+  int starter_F[]={0,1,2,3,4,5,6,7,8,9,10,19,18,17,16,15,14,13,20,21,22,23,24,11,12,35,34,33,32,31,30,29,28,27,26,25};
+    for (int i=0; i<ELEMENTS(starter_F); i++){
+      strip_s.setPixelColor(starter_F[i],0,0,0);
+    }
+  strip_s.show();  
+}
 void starterLights(){
   int starter_F[]={0,1,2,3,4,5,6,7,8,9,10,19,18,17,16,15,14,13,20,21,22,23,24,11,12,35,34,33,32,31,30,29,28,27,26,25};
 //  starter_R[]={0,1,2,3,4,5,6,7,8,9,10};
