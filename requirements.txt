@@ -2,7 +2,7 @@ apturl==0.5.2
 asgi-redis==1.4.3
 asgiref==1.1.2
 attrs==17.2.0
-autobahn==17.9.3
+autobahn==20.12.3
 Automat==0.6.0
 beautifulsoup4==4.4.1
 blinker==1.3
